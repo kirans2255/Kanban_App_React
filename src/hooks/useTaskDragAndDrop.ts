@@ -47,7 +47,7 @@ export function useTaskDragAndDrop<T extends HTMLElement>({
             const isDraggedItemBelowHovered = !isDraggedItemAboveHovered;
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { x:mouseX , y:mouseY } = monitor.getClientOffset() as XYCoord;
+            const { y:mouseY } = monitor.getClientOffset() as XYCoord;
 
             const hoveredBoundingRect = ref.current.getBoundingClientRect();
 

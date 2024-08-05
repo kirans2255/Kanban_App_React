@@ -1,30 +1,35 @@
 import { useDrop } from "react-dnd";
-import { ColumnType ,ItemType} from "../utils/enums";
-import { DragItem ,TaskModel} from "../utils/models";
+import { ColumnType, ItemType } from "../utils/enums";
+import { DragItem, TaskModel } from "../utils/models";
 
-
-
-function useColumDrop(
+function useColumnDrop(
     column: ColumnType,
     handleDrop: (fromColumn: ColumnType, taskId: TaskModel['id']) => void,
 ) {
     const [{ isOver }, dropRef] = useDrop<DragItem, void, { isOver: boolean }>({
         accept: ItemType.TASK,
         drop: (dragItem) => {
-            if(!dragItem || dragItem.from === column) {
+            if (!dragItem || dragItem.from === column) {
                 return;
             }
-            handleDrop(dragItem.from, dragItem.id)
+            // Prevent moving from Blocked or Completed to Todo or In Progress
+            if (
+                (dragItem.from === ColumnType.BLOCKED || dragItem.from === ColumnType.COMPLETED) &&
+                (column === ColumnType.TO_DO || column === ColumnType.IN_PROGRESS)
+            ) {
+                return;
+            }
+            handleDrop(dragItem.from, dragItem.id);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
         }),
     });
 
-    return{
+    return {
         isOver,
         dropRef,
-    }
+    };
 }
 
-export default useColumDrop;
+export default useColumnDrop;

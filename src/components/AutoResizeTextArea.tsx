@@ -3,7 +3,6 @@ import React from "react";
 import ResizeTextarea from 'react-textarea-autosize';
 
 
-
 export const AutoResizeTextArea = React.forwardRef<
 HTMLTextAreaElement,
 TextareaProps
